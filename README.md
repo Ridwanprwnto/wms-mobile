@@ -1,79 +1,134 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# WMS Mobile
 
-# Getting Started
+Aplikasi mobile Android untuk opname barang alat tulis kertas di gudang, dibangun dengan React Native 0.75.5.
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+---
 
-## Step 1: Start the Metro Server
+## Fitur Utama
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+- **Dashboard** — Ringkasan statistik (total barang, lokasi planogram, produk tanpa lokasi).
+- **Opname via Lokasi** — Cari lokasi planogram (LINE+RAK+SHELF+CELL), lihat isi storage, histori opname, dan update quantity.
+- **Opname via Produk** — Cari produk (PRDCD / Nama), temukan semua lokasi penyimpanannya, dan update quantity.
+- **Manajemen Profil** — Lihat informasi user dan status koneksi.
+- **Keamanan** — Autentikasi JWT dengan fitur **Automatic Token Refresh** sebelum request ke backend.
+- **Pembersihan Data** — Fitur untuk mengosongkan storage pada lokasi planogram tertentu.
 
-To start Metro, run the following command from the _root_ of your React Native project:
+---
+
+## Struktur Direktori
+
+```
+WMS/
+├── src/
+│   ├── assets/           # Font, gambar & logo perusahaan
+│   ├── components/       # Komponen UI reusable (Button, Input, LoadingView, dll)
+│   ├── config/           # Konfigurasi API (Base URL & Gateway selection)
+│   ├── constants/        # Global constants (Warna, Tipografi, Theme)
+│   ├── navigation/       # Navigasi (AppStack, AuthStack, MainStack)
+│   ├── service/          # API Services (Axios instances: imsApi & wmsApi)
+│   ├── store/            # State Management (Zustand: authStore, opnameStore)
+│   ├── utils/            # Utilities (Logger, Storage helper, Formatter)
+│   └── screens/
+│       ├── auth/login/   # Screen Login
+│       └── main/
+│           ├── home/     # Dashboard & Ringkasan
+│           ├── opname/   # Fitur Opname (By Location & By Product)
+│           └── profile/  # Informasi Akun User
+├── App.js
+├── .env                  # Environment variables (Dev / Prod)
+└── package.json          # Dependencies & build scripts
+├── App.js
+├── .env                  # Environment variables
+└── package.json
+```
+
+---
+
+## Planogram
+
+| Tipe  | Alamat                         |
+| ----- | ------------------------------ |
+| Rak   | Line (AA) → Rak → Shelf → Cell |
+| Floor | Line (AA) → Loc                |
+
+---
+
+## Setup
+
+### 1. Install dependensi
 
 ```bash
-# using npm
+npm install
+```
+
+### 2. Android — link vector icons
+
+Tambahkan ke `android/app/build.gradle`:
+
+```gradle
+apply from: "../../node_modules/@react-native-vector-icons/material-design-icons/fonts.gradle"
+```
+
+### 3. Setup environment
+
+```bash
+# Development
+npm run env:dev
+
+# Testing
+npm run env:test
+
+# Production
+npm run env:prod
+```
+
+Edit `.env` sesuaikan `API_BASE_URL` ke alamat backend Anda.
+
+### 4. Jalankan aplikasi
+
+```bash
+# Start Metro
 npm start
 
-# OR using Yarn
-yarn start
-```
-
-## Step 2: Start your Application
-
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
-
-### For Android
-
-```bash
-# using npm
+# Jalankan di Android
 npm run android
-
-# OR using Yarn
-yarn android
 ```
 
-### For iOS
+---
 
-```bash
-# using npm
-npm run ios
+## Library yang Digunakan
 
-# OR using Yarn
-yarn ios
-```
+| Library                                            | Kegunaan              |
+| -------------------------------------------------- | --------------------- |
+| `zustand`                                          | State management      |
+| `axios`                                            | HTTP client           |
+| `@react-navigation/native-stack`                   | Navigasi              |
+| `@react-native-async-storage/async-storage`        | Penyimpanan lokal     |
+| `@react-native-vector-icons/material-design-icons` | Icon                  |
+| `react-native-logs`                                | Logging               |
+| `react-native-config`                              | Environment variables |
+| `react-native-paper`                               | UI provider / theme   |
+| `react-native-safe-area-context`                   | Safe area insets      |
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+---
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+## API Endpoints
 
-## Step 3: Modifying your App
+Aplikasi ini berinteraksi dengan dua prefix service utama:
 
-Now that you have successfully run the app, let's modify it.
+### 1. IMS Service (Auth & Token)
+- `POST /api-ims/auth/users/login` — Autentikasi user
+- `POST /api-ims/auth/users/logout` — Logout user
+- `GET  /api-ims/auth/users/profile` — Ambil data profil
+- `GET  /api-ims/main/token/refresh` — Refresh expired JWT token
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
-
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+### 2. WMS Service (Opname & Planogram)
+- `GET    /api-wmsmobile/main/atk/dashboard/summary` — Statistik dashboard
+- `GET    /api-wmsmobile/main/atk/planogram/search` — Cari lokasi planogram
+- `GET    /api-wmsmobile/main/atk/planogram/line/:id` — Detail lokasi & storage
+- `GET    /api-wmsmobile/main/atk/opname/items/:id` — Histori opname per lokasi
+- `DELETE /api-wmsmobile/main/atk/opname/clear-plano/:id` — Kosongkan storage lokasi
+- `GET    /api-wmsmobile/main/atk/products` — Daftar produk untuk opname
+- `GET    /api-wmsmobile/main/atk/opname/by-product/:prdcd` — Lokasi produk tertentu
+- `POST   /api-wmsmobile/main/atk/opname/item` — Simpan data opname
+- `POST   /api-wmsmobile/main/atk/planogram/storage` — Update qty storage langsung
