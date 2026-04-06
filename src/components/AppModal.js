@@ -36,7 +36,7 @@ const AppModal = ({
   scrollable = false,
 }) => {
   const sizeStyle = {
-    sm: {maxHeight: '40%'},
+    sm: {maxHeight: '60%'},
     md: {maxHeight: '65%'},
     lg: {maxHeight: '85%'},
     full: {maxHeight: '95%'},
@@ -155,6 +155,7 @@ const styles = StyleSheet.create({
   },
   body: {
     padding: Spacing.lg,
+    flexShrink: 1,
   },
   scrollContent: {
     paddingBottom: Spacing.sm,
