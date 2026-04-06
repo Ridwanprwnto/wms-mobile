@@ -55,7 +55,8 @@ const ConfirmDialog = ({
       onConfirm={onConfirm}
       onCancel={onClose}
       confirmVariant={cfg.variant}
-      isLoading={isLoading}>
+      isLoading={isLoading}
+      scrollable={true}>
       <View style={styles.body}>
         <View style={[styles.iconWrap, {backgroundColor: cfg.bg}]}>
           <Icon name={cfg.icon} size={32} color={cfg.color} />
