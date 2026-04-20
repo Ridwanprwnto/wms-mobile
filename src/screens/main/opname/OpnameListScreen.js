@@ -72,7 +72,10 @@ const OpnameByPlanogramCard = () => {
   const [newPrdcd, setNewPrdcd] = useState('');
   const [newQty, setNewQty] = useState('');
 
-  const debouncedSearch = useCallback(debounce(q => searchPlanogram(q), 350), []);
+  const debouncedSearch = useCallback(
+    debounce(q => searchPlanogram(q), 350),
+    [],
+  );
 
   const handleQueryChange = text => {
     setQuery(text);
@@ -182,7 +185,11 @@ const OpnameByPlanogramCard = () => {
     <Card style={styles.modeCard} shadow="md">
       {/* Header */}
       <View style={styles.modeHeader}>
-        <View style={[styles.modeIconWrap, {backgroundColor: Colors.primary + '15'}]}>
+        <View
+          style={[
+            styles.modeIconWrap,
+            {backgroundColor: Colors.primary + '15'},
+          ]}>
           <Icon name="map-marker-radius" size={20} color={Colors.primary} />
         </View>
         <View style={{flex: 1}}>
@@ -341,7 +348,7 @@ const OpnameByPlanogramCard = () => {
                         {occupiedItem.prdcd}
                       </Text>
                       <Text style={styles.storageName} numberOfLines={1}>
-                        {occupiedItem.nama || occupiedItem.singkat || '-'}
+                        {occupiedItem.desc2 || occupiedItem.singkat || '-'}
                       </Text>
                       <View style={styles.storageMeta}>
                         <Text style={styles.storageFrac}>
@@ -530,7 +537,10 @@ const OpnameByProductCard = () => {
   const [qtyInput, setQtyInput] = useState('');
   const [saveSuccess, setSaveSuccess] = useState(false);
 
-  const debouncedSearch = useCallback(debounce(q => searchProduct(q), 350), []);
+  const debouncedSearch = useCallback(
+    debounce(q => searchProduct(q), 350),
+    [],
+  );
 
   const handleQueryChange = text => {
     setQuery(text);
@@ -588,7 +598,8 @@ const OpnameByProductCard = () => {
     <Card style={styles.modeCard} shadow="md">
       {/* Header */}
       <View style={styles.modeHeader}>
-        <View style={[styles.modeIconWrap, {backgroundColor: Colors.rack + '15'}]}>
+        <View
+          style={[styles.modeIconWrap, {backgroundColor: Colors.rack + '15'}]}>
           <Icon name="package-variant-closed" size={20} color={Colors.rack} />
         </View>
         <View style={{flex: 1}}>
@@ -641,7 +652,7 @@ const OpnameByProductCard = () => {
               <View style={{flex: 1}}>
                 <Text style={styles.planoAddr}>{prod.prdcd}</Text>
                 <Text style={styles.resultMeta} numberOfLines={1}>
-                  {prod.nama || prod.singkat || '-'}
+                  {prod.desc2 || prod.singkat || '-'}
                 </Text>
               </View>
               <Icon name="chevron-right" size={16} color={Colors.gray300} />
@@ -667,7 +678,7 @@ const OpnameByProductCard = () => {
             </View>
             <View style={{flex: 1}}>
               <Text style={styles.productNama} numberOfLines={2}>
-                {selectedProduct.nama || selectedProduct.singkat || '-'}
+                {selectedProduct.desc2 || selectedProduct.singkat || '-'}
               </Text>
               <View style={styles.productMeta}>
                 <Text style={styles.productMetaText}>
@@ -699,8 +710,7 @@ const OpnameByProductCard = () => {
             <>
               <Text style={styles.addNewTitle}>Pilih Lokasi Planogram</Text>
               {productPlanograms.map(plano => {
-                const isSelected =
-                  selectedPlano?.id_plano === plano.id_plano;
+                const isSelected = selectedPlano?.id_plano === plano.id_plano;
                 return (
                   <TouchableOpacity
                     key={String(plano.id_plano)}
@@ -740,11 +750,7 @@ const OpnameByProductCard = () => {
                       </View>
                     </View>
                     {isSelected && (
-                      <Icon
-                        name="check-circle"
-                        size={18}
-                        color={Colors.rack}
-                      />
+                      <Icon name="check-circle" size={18} color={Colors.rack} />
                     )}
                   </TouchableOpacity>
                 );
